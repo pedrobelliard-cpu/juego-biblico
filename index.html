@@ -32,6 +32,11 @@ header {
     padding: 15px;
     font-size: 14px;
 }
+.status {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 button {
     width: 100%;
     padding: 12px;
@@ -64,7 +69,7 @@ button {
 
 <header>
 <h1>juego biblico para pasarratos</h1>
-<p>Preguntas bíblicas para entretener y aprender</p>
+<p>Preguntas bíblicas para Pasarratos y entretener</p>
 </header>
 
 <div class="container">
@@ -73,7 +78,6 @@ button {
 <strong>Nota del juego:</strong><br>
 Gana el participante que complete todas las preguntas en el
 <strong>menor tiempo posible</strong>.
-Si juegan en grupo, comparen los tiempos finales.
 </div>
 
 <div class="card" id="inicio">
@@ -83,6 +87,9 @@ Si juegan en grupo, comparen los tiempos finales.
 
 <div class="card" id="juego" style="display:none;">
 <div class="timer">⏱ Tiempo: <span id="tiempo">00:00</span></div>
+
+<div class="status" id="estado"></div>
+
 <h3 id="pregunta"></h3>
 <input id="respuesta" placeholder="Escribe tu respuesta">
 <button onclick="responder()">Responder</button>
@@ -101,7 +108,7 @@ Si juegan en grupo, comparen los tiempos finales.
 </div>
 
 <script>
-// BANCO DE PREGUNTAS BÍBLICAS (NEUTRAS)
+// BANCO DE PREGUNTAS BÍBLICAS
 let preguntas = [
     {p:"¿Quién construyó el arca?", r:"noe"},
     {p:"¿Primer libro de la Biblia?", r:"genesis"},
@@ -125,7 +132,7 @@ let preguntas = [
     {p:"¿Monte donde Moisés recibió la ley?", r:"sinai"}
 ];
 
-// MEZCLAR PREGUNTAS ALEATORIAMENTE
+// PREGUNTAS ALEATORIAS
 preguntas = preguntas.sort(() => Math.random() - 0.5);
 
 let actual = 0;
@@ -136,6 +143,7 @@ let intervalo;
 function iniciarJuego() {
     document.getElementById("inicio").style.display = "none";
     document.getElementById("juego").style.display = "block";
+    actualizarEstado();
     mostrarPregunta();
     iniciarTiempo();
 }
@@ -154,9 +162,17 @@ function responder() {
         correctas++;
         actual++;
         actualizarBarra();
+        actualizarEstado();
         mostrarPregunta();
     }
     document.getElementById("respuesta").value = "";
+}
+
+function actualizarEstado() {
+    const total = preguntas.length;
+    const faltan = total - actual;
+    document.getElementById("estado").innerText =
+        `Pregunta ${actual + 1} de ${total} — Faltan ${faltan}`;
 }
 
 function actualizarBarra() {
