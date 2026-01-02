@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Juego Bíblico – Desafío Personal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+}
+header {
+    background: #198754;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+.container {
+    padding: 20px;
+}
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #198754;
+    color: white;
+    border: none;
+    font-size: 16px;
+}
+.progress {
+    background: #e0e0e0;
+    height: 12px;
+    margin-top: 10px;
+}
+.progress div {
+    background: #198754;
+    height: 12px;
+    width: 0%;
+}
+.timer {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Juego Bíblico</h1>
+<p>Desafío Personal</p>
+</header>
+
+<div class="container">
+
+<div class="card" id="inicio">
+<input id="nombre" placeholder="Tu nombre">
+<button onclick="iniciarJuego()">Iniciar juego</button>
+</div>
+
+<div class="card" id="juego" style="display:none;">
+<div class="timer">⏱ Tiempo: <span id="tiempo">00:00</span></div>
+<h3 id="pregunta"></h3>
+<input id="respuesta" placeholder="Escribe tu respuesta">
+<button onclick="responder()">Responder</button>
+
+<div class="progress">
+    <div id="barra"></div>
+</div>
+</div>
+
+<div class="card" id="final" style="display:none;">
+<h2>Juego finalizado</h2>
+<p id="resultado"></p>
+<button onclick="location.reload()">Jugar otra vez</button>
+</div>
+
+</div>
+
+<script>
+const preguntas = [
+    {p:"¿Quién construyó el arca?", r:"noe"},
+    {p:"¿Primer libro de la Biblia?", r:"genesis"},
+    {p:"¿Quién derrotó a Goliat?", r:"david"},
+    {p:"¿Cuántos mandamientos hay?", r:"10"},
+    {p:"¿Dónde nació Jesús?", r:"belen"},
+    {p:"¿Quién abrió el Mar Rojo?", r:"moises"},
+    {p:"¿Cuántos discípulos tuvo Jesús?", r:"12"},
+    {p:"¿Quién fue tragado por un pez?", r:"jonas"},
+    {p:"¿Último libro de la Biblia?", r:"apocalipsis"},
+    {p:"¿Padre de Isaac?", r:"abraham"}
+];
+
+let actual = 0;
+let correctas = 0;
+let segundos = 0;
+let intervalo;
+
+function iniciarJuego() {
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("juego").style.display = "block";
+    mostrarPregunta();
+    iniciarTiempo();
+}
+
+function mostrarPregunta() {
+    if (actual >= preguntas.length) {
+        terminarJuego();
+        return;
+    }
+    document.getElementById("pregunta").innerText = preguntas[actual].p;
+}
+
+function responder() {
+    const r = document.getElementById("respuesta").value.toLowerCase();
+    if (r === preguntas[actual].r) {
+        correctas++;
+        actual++;
+        actualizarBarra();
+        mostrarPregunta();
+    }
+    document.getElementById("respuesta").value = "";
+}
+
+function actualizarBarra() {
+    const porcentaje = (actual / preguntas.length) * 100;
+    document.getElementById("barra").style.width = porcentaje + "%";
+}
+
+function iniciarTiempo() {
+    intervalo = setInterval(() => {
+        segundos++;
+        const min = String(Math.floor(segundos / 60)).padStart(2, "0");
+        const sec = String(segundos % 60).padStart(2, "0");
+        document.getElementById("tiempo").innerText = `${min}:${sec}`;
+    }, 1000);
+}
+
+function terminarJuego() {
+    clearInterval(intervalo);
+    document.getElementById("juego").style.display = "none";
+    document.getElementById("final").style.display = "block";
+    document.getElementById("resultado").innerText =
+        `Respondiste ${correctas} de ${preguntas.length} preguntas en ${document.getElementById("tiempo").innerText}`;
+}
+</script>
+
+</body>
+</html>
