@@ -114,12 +114,12 @@ En juego grupal, puede presionar <strong>STOP</strong> al finalizar.
 </div>
 
 <script>
+// BANCO DE PREGUNTAS BÍBLICAS (ACTUALIZADO)
 let preguntas = [
     {p:"¿Quién construyó el arca?", r:"noe"},
     {p:"¿Primer libro de la Biblia?", r:"genesis"},
     {p:"¿Último libro de la Biblia?", r:"apocalipsis"},
     {p:"¿Quién derrotó a Goliat?", r:"david"},
-    {p:"¿Cuántos mandamientos hay?", r:"10"},
     {p:"¿Dónde nació Jesús?", r:"belen"},
     {p:"¿Quién abrió el Mar Rojo?", r:"moises"},
     {p:"¿Cuántos discípulos tuvo Jesús?", r:"12"},
@@ -134,9 +134,11 @@ let preguntas = [
     {p:"¿Madre del profeta Samuel?", r:"ana"},
     {p:"¿Río donde fue bautizado Jesús?", r:"jordan"},
     {p:"¿Primer hombre según la Biblia?", r:"adan"},
-    {p:"¿Monte donde Moisés recibió la ley?", r:"sinai"}
+    {p:"¿Monte donde Moisés recibió la ley?", r:"sinai"},
+    {p:"¿Cómo se llama el padre de Oseas?", r:"beeri"}
 ];
 
+// PREGUNTAS ALEATORIAS
 preguntas = preguntas.sort(() => Math.random() - 0.5);
 
 let actual = 0;
