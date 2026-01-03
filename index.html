@@ -46,6 +46,9 @@ button {
     border: none;
     font-size: 16px;
 }
+.stop {
+    background: #dc3545;
+}
 .progress {
     background: #e0e0e0;
     height: 12px;
@@ -69,15 +72,16 @@ button {
 
 <header>
 <h1>juego biblico para pasarratos</h1>
-<p>Preguntas bíblicas para Pasarratos y entretener</p>
+<p>Preguntas bíblicas para entretener y aprender</p>
 </header>
 
 <div class="container">
 
 <div class="card note">
 <strong>Nota del juego:</strong><br>
-Gana el participante que complete todas las preguntas en el
-<strong>menor tiempo posible</strong>.
+Gana el participante que complete el reto en el
+<strong>menor tiempo posible</strong>.  
+En juego grupal, puede presionar <strong>STOP</strong> al finalizar.
 </div>
 
 <div class="card" id="inicio">
@@ -94,6 +98,8 @@ Gana el participante que complete todas las preguntas en el
 <input id="respuesta" placeholder="Escribe tu respuesta">
 <button onclick="responder()">Responder</button>
 
+<button class="stop" onclick="detenerJuego()">STOP – Finalizar ahora</button>
+
 <div class="progress">
     <div id="barra"></div>
 </div>
@@ -108,7 +114,6 @@ Gana el participante que complete todas las preguntas en el
 </div>
 
 <script>
-// BANCO DE PREGUNTAS BÍBLICAS
 let preguntas = [
     {p:"¿Quién construyó el arca?", r:"noe"},
     {p:"¿Primer libro de la Biblia?", r:"genesis"},
@@ -132,7 +137,6 @@ let preguntas = [
     {p:"¿Monte donde Moisés recibió la ley?", r:"sinai"}
 ];
 
-// PREGUNTAS ALEATORIAS
 preguntas = preguntas.sort(() => Math.random() - 0.5);
 
 let actual = 0;
@@ -189,12 +193,16 @@ function iniciarTiempo() {
     }, 1000);
 }
 
+function detenerJuego() {
+    terminarJuego();
+}
+
 function terminarJuego() {
     clearInterval(intervalo);
     document.getElementById("juego").style.display = "none";
     document.getElementById("final").style.display = "block";
     document.getElementById("resultado").innerText =
-        `Completaste ${correctas} preguntas en un tiempo total de ${document.getElementById("tiempo").innerText}.`;
+        `Respondiste ${correctas} preguntas en ${document.getElementById("tiempo").innerText}.`;
 }
 </script>
 
