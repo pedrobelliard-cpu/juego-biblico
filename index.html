@@ -37,6 +37,17 @@ header {
     font-weight: bold;
     margin-bottom: 10px;
 }
+.feedback {
+    text-align: center;
+    font-weight: bold;
+    margin: 10px 0;
+}
+.feedback.ok {
+    color: #198754;
+}
+.feedback.bad {
+    color: #dc3545;
+}
 button {
     width: 100%;
     padding: 12px;
@@ -95,6 +106,9 @@ En juego grupal, puede presionar <strong>STOP</strong> al finalizar.
 <div class="status" id="estado"></div>
 
 <h3 id="pregunta"></h3>
+
+<div id="feedback" class="feedback"></div>
+
 <input id="respuesta" placeholder="Escribe tu respuesta">
 <button onclick="responder()">Responder</button>
 
@@ -114,7 +128,6 @@ En juego grupal, puede presionar <strong>STOP</strong> al finalizar.
 </div>
 
 <script>
-// BANCO DE PREGUNTAS BÍBLICAS (ACTUALIZADO)
 let preguntas = [
     {p:"¿Quién construyó el arca?", r:"noe"},
     {p:"¿Primer libro de la Biblia?", r:"genesis"},
@@ -138,7 +151,6 @@ let preguntas = [
     {p:"¿Cómo se llama el padre de Oseas?", r:"beeri"}
 ];
 
-// PREGUNTAS ALEATORIAS
 preguntas = preguntas.sort(() => Math.random() - 0.5);
 
 let actual = 0;
@@ -164,13 +176,30 @@ function mostrarPregunta() {
 
 function responder() {
     const r = document.getElementById("respuesta").value.trim().toLowerCase();
+    const feedback = document.getElementById("feedback");
+
     if (r === preguntas[actual].r) {
         correctas++;
         actual++;
+
+        let mensaje = "Correcto, vas muy bien";
+        if (actual > preguntas.length * 0.6) {
+            mensaje = "Última recta, acelera";
+        } else if (actual > preguntas.length * 0.3) {
+            mensaje = "Excelente ritmo";
+        }
+
+        feedback.className = "feedback ok";
+        feedback.innerText = "✅ " + mensaje;
+
         actualizarBarra();
         actualizarEstado();
         mostrarPregunta();
+    } else {
+        feedback.className = "feedback bad";
+        feedback.innerText = "⚠️ Respuesta incorrecta, intenta la siguiente";
     }
+
     document.getElementById("respuesta").value = "";
 }
 
