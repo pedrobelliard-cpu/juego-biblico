@@ -128,6 +128,7 @@ En juego grupal, puede presionar <strong>STOP</strong> al finalizar.
 </div>
 
 <script>
+// BANCO DE 40 PREGUNTAS BÍBLICAS
 let preguntas = [
     {p:"¿Quién construyó el arca?", r:"noe"},
     {p:"¿Primer libro de la Biblia?", r:"genesis"},
@@ -148,10 +149,34 @@ let preguntas = [
     {p:"¿Río donde fue bautizado Jesús?", r:"jordan"},
     {p:"¿Primer hombre según la Biblia?", r:"adan"},
     {p:"¿Monte donde Moisés recibió la ley?", r:"sinai"},
-    {p:"¿Cómo se llama el padre de Oseas?", r:"beeri"}
+    {p:"¿Cómo se llama el padre de Oseas?", r:"beeri"},
+
+    {p:"¿Ciudad donde Jesús realizó su primer milagro?", r:"cana"},
+    {p:"¿Quién dijo: No les queda vino?", r:"maria"},
+    {p:"¿Hermano del apóstol Pedro?", r:"andres"},
+    {p:"¿Quién bautizó a Jesús?", r:"juan"},
+    {p:"¿Quién separó en dos el agua del río Jordán?", r:"elias"},
+    {p:"¿Rey que escribió Eclesiastés?", r:"salomon"},
+    {p:"¿Discípulo que caminó sobre el agua con Jesús?", r:"pedro"},
+    {p:"¿Libro que contiene los Diez Mandamientos?", r:"exodo"},
+    {p:"¿Esposa de Abraham?", r:"sara"},
+    {p:"¿Hijo de David que reinó después de él?", r:"salomon"},
+    {p:"¿Quién negó a Jesús tres veces?", r:"pedro"},
+    {p:"¿Mar que cruzaron los israelitas al salir de Egipto?", r:"rojo"},
+    {p:"¿Quién interpretó los sueños del faraón?", r:"jose"},
+    {p:"¿Discípulo que dudó de la resurrección?", r:"tomas"},
+    {p:"¿Libro bíblico con proverbios?", r:"proverbios"},
+    {p:"¿Profeta tragado por un pez?", r:"jonas"},
+    {p:"¿Padre de Juan el Bautista?", r:"zacarias"},
+    {p:"¿Reina que salvó a su pueblo en Persia?", r:"ester"},
+    {p:"¿Apóstol que escribió Apocalipsis?", r:"juan"},
+    {p:"Jesús murió en un?", r:"madero"}
 ];
 
-preguntas = preguntas.sort(() => Math.random() - 0.5);
+// MEZCLAR Y TOMAR SOLO 20
+preguntas = preguntas
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 20);
 
 let actual = 0;
 let correctas = 0;
