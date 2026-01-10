@@ -42,12 +42,9 @@ header {
     font-weight: bold;
     margin: 10px 0;
 }
-.feedback.ok {
-    color: #198754;
-}
-.feedback.bad {
-    color: #dc3545;
-}
+.feedback.ok { color: #198754; }
+.feedback.bad { color: #dc3545; }
+
 button {
     width: 100%;
     padding: 12px;
@@ -57,9 +54,9 @@ button {
     border: none;
     font-size: 16px;
 }
-.stop {
-    background: #dc3545;
-}
+.level2 { background: #0d6efd; }
+.stop { background: #dc3545; }
+
 .progress {
     background: #e0e0e0;
     height: 12px;
@@ -90,14 +87,14 @@ button {
 
 <div class="card note">
 <strong>Nota del juego:</strong><br>
-Gana el participante que complete el reto en el
-<strong>menor tiempo posible</strong>.  
-En juego grupal, puede presionar <strong>STOP</strong> al finalizar.
+Gana quien complete el nivel en el <strong>menor tiempo</strong>.  
+Los niveles se pueden jugar <strong>sin restricción</strong>.
 </div>
 
 <div class="card" id="inicio">
 <input id="nombre" placeholder="Tu nombre">
-<button onclick="iniciarJuego()">Iniciar juego</button>
+<button onclick="iniciarJuego(1)">Nivel 1 – Básico</button>
+<button class="level2" onclick="iniciarJuego(2)">Nivel 2 – Avanzado</button>
 </div>
 
 <div class="card" id="juego" style="display:none;">
@@ -106,13 +103,11 @@ En juego grupal, puede presionar <strong>STOP</strong> al finalizar.
 <div class="status" id="estado"></div>
 
 <h3 id="pregunta"></h3>
-
 <div id="feedback" class="feedback"></div>
 
 <input id="respuesta" placeholder="Escribe tu respuesta">
 <button onclick="responder()">Responder</button>
-
-<button class="stop" onclick="detenerJuego()">STOP – Finalizar ahora</button>
+<button class="stop" onclick="detenerJuego()">STOP – Finalizar</button>
 
 <div class="progress">
     <div id="barra"></div>
@@ -128,8 +123,8 @@ En juego grupal, puede presionar <strong>STOP</strong> al finalizar.
 </div>
 
 <script>
-// BANCO DE 40 PREGUNTAS BÍBLICAS
-let preguntas = [
+// ---------------- NIVEL 1 ----------------
+let nivel1 = [
     {p:"¿Quién construyó el arca?", r:"noe"},
     {p:"¿Primer libro de la Biblia?", r:"genesis"},
     {p:"¿Último libro de la Biblia?", r:"apocalipsis"},
@@ -141,51 +136,59 @@ let preguntas = [
     {p:"¿Padre de Isaac?", r:"abraham"},
     {p:"¿Hermano de Moisés?", r:"aaron"},
     {p:"¿Rey conocido por su sabiduría?", r:"salomon"},
-    {p:"¿Libro que sigue a los Evangelios?", r:"hechos"},
     {p:"¿Jardín donde vivieron Adán y Eva?", r:"eden"},
     {p:"¿Ciudad donde cayeron los muros?", r:"jerico"},
-    {p:"¿Quién escribió muchos Salmos?", r:"david"},
     {p:"¿Madre del profeta Samuel?", r:"ana"},
     {p:"¿Río donde fue bautizado Jesús?", r:"jordan"},
     {p:"¿Primer hombre según la Biblia?", r:"adan"},
     {p:"¿Monte donde Moisés recibió la ley?", r:"sinai"},
-    {p:"¿Cómo se llama el padre de Oseas?", r:"beeri"},
-
     {p:"¿Ciudad donde Jesús realizó su primer milagro?", r:"cana"},
     {p:"¿Quién dijo: No les queda vino?", r:"maria"},
-    {p:"¿Hermano del apóstol Pedro?", r:"andres"},
-    {p:"¿Quién bautizó a Jesús?", r:"juan"},
-    {p:"¿Quién separó en dos el agua del río Jordán?", r:"elias"},
-    {p:"¿Rey que escribió Eclesiastés?", r:"salomon"},
-    {p:"¿Discípulo que caminó sobre el agua con Jesús?", r:"pedro"},
-    {p:"¿Libro que contiene los Diez Mandamientos?", r:"exodo"},
-    {p:"¿Esposa de Abraham?", r:"sara"},
-    {p:"¿Hijo de David que reinó después de él?", r:"salomon"},
-    {p:"¿Quién negó a Jesús tres veces?", r:"pedro"},
-    {p:"¿Mar que cruzaron los israelitas al salir de Egipto?", r:"rojo"},
-    {p:"¿Quién interpretó los sueños del faraón?", r:"jose"},
-    {p:"¿Discípulo que dudó de la resurrección?", r:"tomas"},
-    {p:"¿Libro bíblico con proverbios?", r:"proverbios"},
-    {p:"¿Profeta tragado por un pez?", r:"jonas"},
-    {p:"¿Padre de Juan el Bautista?", r:"zacarias"},
-    {p:"¿Reina que salvó a su pueblo en Persia?", r:"ester"},
-    {p:"¿Apóstol que escribió Apocalipsis?", r:"juan"},
-    {p:"Jesús murió en un?", r:"madero"}
+    {p:"¿Hermano del apóstol Pedro?", r:"andres"}
 ];
 
-// MEZCLAR Y TOMAR SOLO 20
-preguntas = preguntas
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 20);
+// ---------------- NIVEL 2 ----------------
+let nivel2 = [
+    {p:"¿Cómo se llama el padre de Oseas?", r:"beeri"},
+    {p:"¿Quién separó en dos el agua del río Jordán?", r:"elias"},
+    {p:"Jesús murió en un?", r:"madero"},
+    {p:"¿Libro que sigue a los Evangelios?", r:"hechos"},
+    {p:"¿Libro bíblico con proverbios?", r:"proverbios"},
+    {p:"¿Padre de Juan el Bautista?", r:"zacarias"},
+    {p:"¿Reina que salvó a su pueblo en Persia?", r:"ester"},
+    {p:"¿Quién interpretó los sueños del faraón?", r:"jose"},
+    {p:"¿Discípulo que dudó de la resurrección?", r:"tomas"},
+    {p:"¿Mar que cruzaron los israelitas al salir de Egipto?", r:"rojo"},
+    {p:"¿Quién negó a Jesús tres veces?", r:"pedro"},
+    {p:"¿Rey conocido por su sabiduría?", r:"salomon"},
+    {p:"¿Cómo se llamaba el padre del profeta Jeremías?", r:"hilquiaz"},
+    {p:"¿Qué profeta vio un rollo escrito por delante y por detrás?", r:"ezequiel"},
+    {p:"¿Cuál es el nombre de la estrella del apocalipsis que puso los ríos muy amargos?", r:"ajenjo"},
+    {p:"¿Quién fue el rey de Judá cuando Isaías tuvo su visión de Jehová en su templo?", r:"uzias"},
+    {p:"¿Qué profeta dijo: Tú eres el hombre?", r:"natan"},
+    {p:"¿Apóstol que escribió Apocalipsis?", r:"juan"},
+    {p:"¿Libro bíblico que sigue a los Salmos?", r:"proverbios"},
+    {p:"¿Quién fue el sumo sacerdote cuando Jesús fue juzgado?", r:"caifas"}
+];
 
+let preguntas = [];
 let actual = 0;
 let correctas = 0;
 let segundos = 0;
 let intervalo;
 
-function iniciarJuego() {
+// ---------------- LÓGICA ----------------
+function iniciarJuego(nivel) {
+    preguntas = (nivel === 1 ? [...nivel1] : [...nivel2])
+        .sort(() => Math.random() - 0.5);
+
+    actual = 0;
+    correctas = 0;
+    segundos = 0;
+
     document.getElementById("inicio").style.display = "none";
     document.getElementById("juego").style.display = "block";
+
     actualizarEstado();
     mostrarPregunta();
     iniciarTiempo();
@@ -208,11 +211,8 @@ function responder() {
         actual++;
 
         let mensaje = "Correcto, vas muy bien";
-        if (actual > preguntas.length * 0.6) {
-            mensaje = "Última recta, acelera";
-        } else if (actual > preguntas.length * 0.3) {
-            mensaje = "Excelente ritmo";
-        }
+        if (actual > preguntas.length * 0.6) mensaje = "Última recta, acelera";
+        else if (actual > preguntas.length * 0.3) mensaje = "Excelente ritmo";
 
         feedback.className = "feedback ok";
         feedback.innerText = "✅ " + mensaje;
@@ -229,15 +229,13 @@ function responder() {
 }
 
 function actualizarEstado() {
-    const total = preguntas.length;
-    const faltan = total - actual;
     document.getElementById("estado").innerText =
-        `Pregunta ${actual + 1} de ${total} — Faltan ${faltan}`;
+        `Pregunta ${actual + 1} de ${preguntas.length}`;
 }
 
 function actualizarBarra() {
-    const porcentaje = (actual / preguntas.length) * 100;
-    document.getElementById("barra").style.width = porcentaje + "%";
+    document.getElementById("barra").style.width =
+        (actual / preguntas.length) * 100 + "%";
 }
 
 function iniciarTiempo() {
